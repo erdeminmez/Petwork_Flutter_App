@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:petwork/responsive/mobile_screen_layout.dart';
+import 'package:petwork/responsive/responsive_layout_screen.dart';
+import 'package:petwork/responsive/web_screen_layout.dart';
 import 'package:petwork/utils/colors.dart';
 
 void main() {
@@ -17,7 +20,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
-      home: Scaffold(body: Text('Lets build petwork')) ,
+      home: ResponsiveLayout(
+        mobileScreenLayout: MobileScreenLayout(),
+        webScreenLayout: WebScreenLayout(),
+      ),
     );
   }
 }
