@@ -6,6 +6,7 @@ import 'package:petwork/responsive/web_screen_layout.dart';
 import 'package:petwork/utils/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:petwork/screens/login_screen.dart';
+import 'package:petwork/screens/signup_screen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         mobileScreenLayout: MobileScreenLayout(),
         webScreenLayout: WebScreenLayout(),
       ),*/
-      home: LoginScreen(),
+      home: SignupScreen(),
     );
   }
 }
