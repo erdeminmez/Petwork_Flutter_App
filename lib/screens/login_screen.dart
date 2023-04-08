@@ -4,6 +4,10 @@ import 'package:petwork/utils/colors.dart';
 import 'package:petwork/widgets/text_field_input.dart';
 import 'package:petwork/utils/utils.dart';
 import 'package:petwork/resources/auth_methods.dart';
+import 'package:petwork/responsive/responsive_layout_screen.dart';
+import 'package:petwork/responsive/web_screen_layout.dart';
+import 'package:petwork/responsive/mobile_screen_layout.dart';
+import 'package:petwork/screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -34,7 +38,14 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (res == "success") {
-
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
+        ),
+      );
     }
     else {
       showSnackBar(res, context);
@@ -44,6 +55,10 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = false;
     });
 
+  }
+
+  void navigateToSignUp() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignupScreen()));
   }
 
   @override
@@ -110,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToSignUp,
                     child: Container(
                       child: const Text(
                         "Sign up.",

@@ -6,6 +6,11 @@ import 'package:petwork/resources/auth_methods.dart';
 import 'package:petwork/utils/utils.dart';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
+import 'package:petwork/responsive/responsive_layout_screen.dart';
+import 'package:petwork/responsive/mobile_screen_layout.dart';
+import 'package:petwork/responsive/web_screen_layout.dart';
+import 'package:petwork/screens/login_screen.dart';
+
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -47,9 +52,22 @@ class _SignupScreenState extends State<SignupScreen> {
     
     if (res != 'success') {
       showSnackBar(res, context);
-    } else {
+    }
+    else {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+              mobileScreenLayout: MobileScreenLayout(),
+              webScreenLayout: WebScreenLayout(),
+            ),
+          ),
+      );
 
     }
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -137,10 +155,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToLogin,
                     child: Container(
                       child: const Text(
-                        "Sign up.",
+                        "Login.",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
