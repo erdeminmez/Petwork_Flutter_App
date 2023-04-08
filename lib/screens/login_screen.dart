@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:petwork/utils/colors.dart';
 import 'package:petwork/widgets/text_field_input.dart';
+import 'package:petwork/utils/utils.dart';
+import 'package:petwork/resources/auth_methods.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,12 +15,35 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    if (res == "success") {
+
+    }
+    else {
+      showSnackBar(res, context);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+
   }
 
   @override
@@ -52,9 +77,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24,),
               //button login
               InkWell(
-                onTap: () {},
+                onTap: loginUser,
                 child: Container(
-                  child: const Text('Log in'),
+                  child: Container(
+                    child: _isLoading ?
+                    const Center(child: CircularProgressIndicator(color: primaryColor,),)
+                        : const Text('Log in'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -65,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     color: blueColor,
+                  ),
                   ),
                 ),
               ),
