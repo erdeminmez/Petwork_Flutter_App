@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:typed_data';
 import 'package:petwork/resources/storage_methods.dart';
+import 'package:petwork/models/user.dart' as model;
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,12 +24,13 @@ class AuthMethods {
         print(cred.user!.uid);
 
         //Add User to the Database
-        _firestore.collection('users').doc(cred.user!.uid).set({
-          'email' : email,
-          'bio' : bio,
-          'phone' : phone,
-          'uid' : cred.user!.uid,
-        });
+        model.User user = model.User(
+          email : email,
+          bio : bio,
+          phone : phone,
+          uid : cred.user!.uid,
+        );
+        await _firestore.collection('users').doc(cred.user!.uid).set(user.toJson(),);
         res = "success";
       }
     }
