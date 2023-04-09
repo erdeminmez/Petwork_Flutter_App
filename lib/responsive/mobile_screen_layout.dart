@@ -55,22 +55,17 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         backgroundColor: mobileBackgroundColor,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.question_mark, color: _page == 0 ? primaryColor : secondaryColor,),
-          label: '',
-          backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.announcement, color: _page == 1 ? primaryColor : secondaryColor,),
+            icon: Icon(Icons.home, color: _page == 0 ? primaryColor : secondaryColor,),
             label: '',
             backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle, color: _page == 2 ? primaryColor : secondaryColor,),
+            icon: Icon(Icons.add_circle, color: _page == 1 ? primaryColor : secondaryColor,),
             label: '',
             backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: _page == 3 ? primaryColor : secondaryColor,),
+            icon: Icon(Icons.person, color: _page == 2 ? primaryColor : secondaryColor,),
             label: '',
             backgroundColor: primaryColor,
           ),
