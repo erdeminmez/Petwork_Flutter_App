@@ -6,6 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:petwork/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:petwork/providers/user_provider.dart';
+import 'package:petwork/resources/firestore_methods.dart';
+import 'package:petwork/utils/utils.dart';
+import 'package:intl/intl.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -19,7 +22,47 @@ class _AddPostScreenState extends State<AddPostScreen> {
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _kindController = TextEditingController();
   final TextEditingController _areaController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
   DateTime _dateTime = DateTime.now();
+  bool _isLoading = false;
+
+  void postImage(
+      String uid,
+      String uemail,
+      String uphone,
+      ) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      String res = await FirestoreMethods().uploadPost(
+          _typeController.text,
+          _kindController.text,
+          _areaController.text,
+          _dateTime,
+          _file!,
+          uid,
+          uemail,
+          uphone,
+      );
+      if (res == 'success') {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar('Posted!', context);
+        clearImage();
+      }
+      else {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar(res, context);
+      }
+    }
+    catch(err) {
+      showSnackBar(err.toString(), context);
+    }
+  }
 
   _selectImage(BuildContext context) async {
     return showDialog(context: context, builder: (context) {
@@ -70,7 +113,23 @@ class _AddPostScreenState extends State<AddPostScreen> {
       setState(() {
         _dateTime = value!;
       });
+      _dateController.text = DateFormat('yyyy-MM-dd').format(value!);
     });
+  }
+
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _typeController.dispose();
+    _kindController.dispose();
+    _areaController.dispose();
+    _dateController.dispose();
   }
 
   @override
@@ -94,12 +153,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
         backgroundColor: mobileBackgroundColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: clearImage,
         ),
         title: const Text('Post to'),
         centerTitle: false,
         actions: [
-          TextButton(onPressed: () {}, child: const Text(
+          TextButton(
+            onPressed: () => postImage(user.uid, user.email, user.phone),
+            child: const Text(
             'Post',
             style: TextStyle(
               color: Colors.blueAccent,
@@ -114,6 +175,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          _isLoading ? const LinearProgressIndicator() : const Padding(padding: EdgeInsets.only(top: 0)),
           SizedBox(height: 24),
           Stack(
             children: [
@@ -126,7 +188,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
           SizedBox(height: 24),
           TextField(
             controller: _typeController,
-            obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Pet Type',
@@ -135,7 +196,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
           SizedBox(height: 10),
           TextField(
             controller: _kindController,
-            obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Pet Kind',
@@ -144,20 +204,28 @@ class _AddPostScreenState extends State<AddPostScreen> {
           SizedBox(height: 10),
           TextField(
             controller: _areaController,
-            obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Area Found',
             ),
           ),
           SizedBox(height: 10),
+          TextField(
+            enabled: false,
+            controller: _dateController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Date Found',
+            ),
+          ),
+          SizedBox(height: 10,),
           Center(
             child: MaterialButton(
               onPressed: _showDatePicker,
               child: const Padding(
                 padding: EdgeInsets.all(18.0),
                 child: Text('Choose Date',
-                style:  TextStyle(color: Colors.black, fontSize: 16),),
+                  style:  TextStyle(color: Colors.black, fontSize: 16),),
               ),
               color: secondaryColor,
             ),
