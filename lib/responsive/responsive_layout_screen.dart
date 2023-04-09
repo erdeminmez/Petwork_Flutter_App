@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:petwork/utils/dimensions.dart';
+import 'package:petwork/utils/global_variables.dart';
 import 'package:petwork/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
