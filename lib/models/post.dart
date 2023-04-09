@@ -4,7 +4,7 @@ class Post {
   final String petType;
   final String petKind;
   final String areaFound;
-  final dateFound;
+  final String dateFound;
   final String uid;
   final String uemail;
   final String uphone;

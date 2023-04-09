@@ -39,7 +39,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           _typeController.text,
           _kindController.text,
           _areaController.text,
-          _dateTime,
+          DateFormat.yMMMd().format(_dateTime),
           _file!,
           uid,
           uemail,
@@ -113,7 +113,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       setState(() {
         _dateTime = value!;
       });
-      _dateController.text = DateFormat('yyyy-MM-dd').format(value!);
+      _dateController.text = DateFormat.yMMMd().format(value!);
     });
   }
 

@@ -12,7 +12,7 @@ class FirestoreMethods {
       String petType,
       String petKind,
       String areaFound,
-      DateTime dateFound,
+      String dateFound,
       Uint8List file,
       String uid,
       String uemail,

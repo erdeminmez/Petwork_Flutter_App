@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:petwork/utils/colors.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
+  final snap;
+  const PostCard({Key? key, required this.snap,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,12 +11,12 @@ class PostCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
         children: [
-          SizedBox(height: 20,),
+          SizedBox(height: 10,),
           SizedBox(
             height: MediaQuery.of(context).size.height*0.35,
             width: double.infinity,
             child: Image.network(
-              'https://cdn.britannica.com/39/7139-050-A88818BB/Himalayan-chocolate-point.jpg',
+              snap['postURL'],
               fit: BoxFit.cover,
             ),
           ),
@@ -37,10 +38,10 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Toronto',
+                          snap['areaFound'],
                           style: const TextStyle(
                             fontWeight: FontWeight.normal,
-                            fontSize: 20,
+                            fontSize: 18,
                           ),
                         ),
                       ],
@@ -57,10 +58,10 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          '2 weeks ago',
+                          snap['dateFound'].toString(),
                           style: const TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 20,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14,
                           ),
                         ),
                       ],
@@ -70,6 +71,7 @@ class PostCard extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(height: 10,),
         ],
       ),
     );
