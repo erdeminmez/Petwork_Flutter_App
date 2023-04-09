@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:petwork/utils/colors.dart';
+import 'dart:typed_data';
+import 'package:petwork/utils/utils.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:petwork/models/user.dart';
+import 'package:provider/provider.dart';
+import 'package:petwork/providers/user_provider.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -9,6 +15,50 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
+  Uint8List? _file;
+  final TextEditingController _typeController = TextEditingController();
+  final TextEditingController _kindController = TextEditingController();
+  final TextEditingController _areaController = TextEditingController();
+  DateTime _dateTime = DateTime.now();
+
+  _selectImage(BuildContext context) async {
+    return showDialog(context: context, builder: (context) {
+      return SimpleDialog(
+        title: const Text('Create a Post'),
+        children: [
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(20),
+            child: const Text('Take a photo'),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              Uint8List file = await pickImage(ImageSource.camera,);
+              setState(() {
+                _file = file;
+              });
+            },
+          ),
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(20),
+            child: const Text('Choose from gallery'),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              Uint8List file = await pickImage(ImageSource.gallery,);
+              setState(() {
+                _file = file;
+              });
+            },
+          ),
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(20),
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    });
+  }
 
   void _showDatePicker() {
     showDatePicker(
@@ -16,13 +66,30 @@ class _AddPostScreenState extends State<AddPostScreen> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2000),
         lastDate: DateTime(2025)
-    );
+    ).then((value) {
+      setState(() {
+        _dateTime = value!;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    final User user = Provider.of<UserProvider>(context).getUser;
+
+    return _file == null ?
+
+    Center(
+      child: IconButton(
+        icon: const Icon(Icons.upload),
+        onPressed: () => _selectImage(context),
+      ),
+    )
+
+    :
+
+    Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
         leading: IconButton(
@@ -45,9 +112,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(height: 24),
+          Stack(
+            children: [
+              CircleAvatar(
+                radius: 64,
+                backgroundImage: MemoryImage(_file!),
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
           TextField(
+            controller: _typeController,
             obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -56,6 +134,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ),
           SizedBox(height: 10),
           TextField(
+            controller: _kindController,
             obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -64,10 +143,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ),
           SizedBox(height: 10),
           TextField(
+            controller: _areaController,
             obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Area Lost',
+              labelText: 'Area Found',
             ),
           ),
           SizedBox(height: 10),
@@ -83,6 +163,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
           ),
           const Divider(),
+          Flexible(child: Container(), flex: 2,),
         ],
       ),
     );
