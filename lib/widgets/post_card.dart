@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petwork/utils/colors.dart';
+import 'package:petwork/screens/details_screen.dart';
 
 class PostCard extends StatelessWidget {
   final snap;
@@ -12,12 +13,19 @@ class PostCard extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: 10,),
-          SizedBox(
-            height: MediaQuery.of(context).size.height*0.35,
-            width: double.infinity,
-            child: Image.network(
-              snap['postURL'],
-              fit: BoxFit.cover,
+          GestureDetector(
+            onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => DetailsScreen(),
+                ),
+            ),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height*0.35,
+              width: double.infinity,
+              child: Image.network(
+                snap['postURL'],
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           SizedBox(height: 20,),
