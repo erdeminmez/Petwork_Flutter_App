@@ -4,17 +4,36 @@ import 'package:petwork/screens/profile_screen.dart';
 import 'package:petwork/models/user.dart' as model;
 import 'package:petwork/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:petwork/resources/firestore_methods.dart';
+import 'package:petwork/utils/utils.dart';
 
-class EntryCard extends StatelessWidget {
+class EntryCard extends StatefulWidget {
   final snap;
   const EntryCard({Key? key, required this.snap}) : super(key: key);
+
+  @override
+  State<EntryCard> createState() => _EntryCardState();
+}
+
+class _EntryCardState extends State<EntryCard> {
+
+  deletePost(String postId) async {
+    try {
+      await FirestoreMethods().deletePost(postId);
+    } catch (err) {
+      showSnackBar(
+        err.toString(),
+        context,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final model.User user = Provider.of<UserProvider>(context).getUser;
 
 
-    return snap['uid'].toString() == user.uid
+    return widget.snap['uid'].toString() == user.uid
         ? Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
@@ -25,7 +44,7 @@ class EntryCard extends StatelessWidget {
             height: MediaQuery.of(context).size.height*0.35,
             width: double.infinity,
             child: Image.network(
-              snap['postURL'],
+              widget.snap['postURL'],
               fit: BoxFit.cover,
             ),
           ),
@@ -49,7 +68,7 @@ class EntryCard extends StatelessWidget {
                   children: [
                     SizedBox(height: 12.0), // Add some spacing between the box and the first text
                     Text(
-                      'Pet Type: ${snap['petType']}',
+                      'Pet Type: ${widget.snap['petType']}',
                       style: TextStyle(
                         color: secondaryColor,
                         fontSize: 16,
@@ -57,7 +76,7 @@ class EntryCard extends StatelessWidget {
                     ),
                     SizedBox(height: 12.0), // Add some spacing between the texts
                     Text(
-                      'Pet Kind: ${snap['petKind']}',
+                      'Pet Kind: ${widget.snap['petKind']}',
                       style: TextStyle(
                         color: secondaryColor,
                         fontSize: 16,
@@ -65,7 +84,7 @@ class EntryCard extends StatelessWidget {
                     ),
                     SizedBox(height: 12.0), // Add some spacing between the texts
                     Text(
-                      'Area Found: ${snap['areaFound']}',
+                      'Area Found: ${widget.snap['areaFound']}',
                       style: TextStyle(
                         color: secondaryColor,
                         fontSize: 16,
@@ -73,7 +92,7 @@ class EntryCard extends StatelessWidget {
                     ),
                     SizedBox(height: 12.0), // Add some spacing between the texts
                     Text(
-                      'Date Found: ${snap['dateFound']}',
+                      'Date Found: ${widget.snap['dateFound']}',
                       style: TextStyle(
                         color: secondaryColor,
                         fontSize: 16,
@@ -98,7 +117,34 @@ class EntryCard extends StatelessWidget {
                         ),
                         ElevatedButton.icon(
                           onPressed: () {
-                            // TODO: Implement delete functionality
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Confirm delete"),
+                                  content: Text("Are you sure you want to delete this entry?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text("Cancel"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        deletePost(
+                                          widget.snap['postId'].toString(),
+                                        );
+                                        // remove the dialog box
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("Delete"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           icon: Icon(Icons.delete),
                           label: Text('Delete'),
