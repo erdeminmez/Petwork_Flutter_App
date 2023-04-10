@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:petwork/utils/colors.dart';
 import 'package:petwork/widgets/post_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:petwork/widgets/post_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,7 +15,7 @@ class HomeScreen extends StatelessWidget {
         title: Image.asset('assets/petwork.png', color: primaryColor, height: 32,),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        stream: FirebaseFirestore.instance.collection('posts').orderBy('datePublished', descending: true).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

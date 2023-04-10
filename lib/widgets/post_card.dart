@@ -16,7 +16,9 @@ class PostCard extends StatelessWidget {
           GestureDetector(
             onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (context) => DetailsScreen(),
+                    builder: (context) => DetailsScreen(
+                      postId: snap['postId'].toString(),
+                    ),
                 ),
             ),
             child: SizedBox(
