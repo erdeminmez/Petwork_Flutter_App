@@ -100,21 +100,8 @@ class _EntryCardState extends State<EntryCard> {
                     ),
                     SizedBox(height: 12.0), // Add some spacing between the texts
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            // TODO: Implement edit functionality
-                          },
-                          icon: Icon(Icons.edit),
-                          label: Text('Edit'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.green,
-                            textStyle: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
                         ElevatedButton.icon(
                           onPressed: () {
                             showDialog(

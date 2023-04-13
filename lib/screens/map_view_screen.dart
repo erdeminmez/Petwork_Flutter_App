@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:geocoding/geocoding.dart';
+import 'package:petwork/utils/colors.dart';
 
 class MapViewScreen extends StatefulWidget {
   final address;
@@ -30,7 +31,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Google Map View"), centerTitle: false,),
+      appBar: AppBar(backgroundColor: mobileBackgroundColor, title: const Text("Google Map View"), centerTitle: false,),
       body: GoogleMap(initialCameraPosition: initialPosition, markers: markers, zoomControlsEnabled: false, mapType: MapType.normal, onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
       },

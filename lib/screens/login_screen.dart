@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Flexible(child: Container(), flex: 2,),
+              Expanded(flex: 2, child: Container()),
               //image
               Image.asset('assets/petwork.png', height: 64,),
               const SizedBox(height: 64,),
@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 12,),
-              Flexible(child: Container(), flex: 2,),
+              Expanded(flex: 2, child: Container()),
               //transition to sign up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -23,4 +23,5 @@ class StorageMethods {
     String downloadURL = await snap.ref.getDownloadURL();
     return downloadURL;
   }
+
 }
