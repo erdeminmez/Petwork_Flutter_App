@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petwork/utils/colors.dart';
 import 'package:petwork/screens/details_screen.dart';
+import 'package:petwork/screens/map_view_screen.dart';
 
 class DetailCard extends StatelessWidget {
   final snap;
@@ -37,9 +38,13 @@ class DetailCard extends StatelessWidget {
                   color: primaryColor,
                 ),
               ),
-              onPressed: () {
-                // TODO: Add onPressed action
-              },
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MapViewScreen(
+                    address: snap['areaFound'].toString(),
+                  ),
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 primary: Colors.blue,
               ),
